@@ -19,12 +19,17 @@ export default function UrlForm() {
       setShortUrl(`${window.location.origin}/${alias.trim()}`);
       setAlias("");
       setLongUrl("");
-    } catch (err: any) {
-      if (err.message === "alias-taken") setError("Alias already taken.");
-      else if (err.message === "invalid-url") setError("Invalid URL.");
-      else setError("Server error.");
+    } catch (err) {
+      if (err instanceof Error) {
+        if (err.message === "alias-taken") setError("Alias already taken.");
+        else if (err.message === "invalid-url") setError("Invalid URL.");
+        else setError("Server error.");
+      } else {
+        setError("Unknown error.");
+      }
     }
   }
+    
 
   return (
     <div className="bg-white shadow rounded-xl p-6 w-96 mt-12">
