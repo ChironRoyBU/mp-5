@@ -1,12 +1,13 @@
+export const dynamic = "force-dynamic";
+
 import { getUrlByAlias } from "@/lib/getUrlByAlias";
 import { redirect, notFound } from "next/navigation";
 
-export default async function AliasRedirect({
-  params,
-}: {
-  params: { alias: string };
-}) {
-  const dest = await getUrlByAlias(params.alias);
+type Params = Promise<{ alias: string }>;
+
+export default async function AliasRedirect({ params }: { params: Params }) {
+  const { alias } = await params;          
+  const dest = await getUrlByAlias(alias);
   if (!dest) notFound();
   redirect(dest);
 }
